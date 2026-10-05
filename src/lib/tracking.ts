@@ -134,11 +134,22 @@ function fireOaiqMeasure(
   }
 }
 
-/** Successful contact/estimate form submission. */
-export function trackLead(params: Record<string, unknown> = {}): void {
-  if (typeof window === 'undefined') return
-  fireGa('generate_lead', params)
-  fireOaiqMeasure('lead_created', { type: 'customer_action' })
+/**
+ * Successful contact/estimate form submission. Call only after the server confirms the lead
+ * was saved, passing the saved lead's ID. The OpenAI event_id is tied to that row
+ * (tr-lead-<id>), so each saved lead is reported once and never under a random ID.
+ */
+export function trackLead(leadId: string | undefined, params: Record<string, unknown> = {}): void {
+  if (typeof window === 'undefined' || !leadId) return
+  const key = `tr_lead_${leadId}`
+  try {
+    if (sessionStorage.getItem(key)) return
+    sessionStorage.setItem(key, '1')
+  } catch {
+    /* storage unavailable: still report once for this call */
+  }
+  fireGa('generate_lead', { ...params, lead_id: leadId })
+  fireOaiqMeasure('lead_created', { type: 'customer_action' }, { event_id: `tr-lead-${leadId}` })
 }
 
 /** Click on a phone-number link. */

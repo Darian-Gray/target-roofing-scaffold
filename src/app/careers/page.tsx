@@ -246,7 +246,7 @@ export default async function CareersPage() {
               <span className="break-all">hr@targetroofers.com</span>
             </a>
             <a
-              href="tel:239-332-5707"
+              href="tel:+12393325707"
               className="inline-flex items-center justify-center gap-1.5 xs:gap-2 sm:gap-3 border-2 border-white px-2.5 xs:px-4 sm:px-8 py-3.5 min-h-[44px] font-[family-name:var(--font-display)] text-[10px] xs:text-xs sm:text-sm font-bold tracking-normal xs:tracking-wider sm:tracking-widest text-white uppercase transition-all duration-200 hover:bg-white hover:text-[var(--red)] max-w-full"
             >
               <Phone className="h-4 w-4 xs:h-5 xs:w-5 flex-shrink-0" />

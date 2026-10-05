@@ -134,7 +134,7 @@ export default function MaintenancePage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <a
-                href="tel:239-332-5707"
+                href="tel:+12393325707"
                 className="inline-flex items-center justify-center gap-2 px-10 py-4 border-2 border-white text-white font-bold uppercase tracking-wide rounded hover:bg-white/10 transition-colors text-sm"
               >
                 <Phone className="h-4 w-4" />
@@ -433,7 +433,7 @@ export default function MaintenancePage() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
-              href="tel:239-332-5707"
+              href="tel:+12393325707"
               className="inline-flex items-center justify-center gap-2 px-10 py-4 border-2 border-white text-white font-bold uppercase tracking-wide rounded hover:bg-white/10 transition-colors text-sm"
             >
               <Phone className="h-4 w-4" />

@@ -171,7 +171,7 @@ export default function RoofInspectionsSurveysPage() {
                 Schedule an Inspection
               </a>
               <a
-                href="tel:239-332-5707"
+                href="tel:+12393325707"
                 className="inline-flex items-center justify-center gap-2 px-8 py-3.5 border-2 border-white text-white font-bold uppercase tracking-wide rounded hover:bg-white/10 transition-colors text-sm"
               >
                 <Phone className="h-4 w-4" />
@@ -323,7 +323,7 @@ export default function RoofInspectionsSurveysPage() {
                     <p className="font-bold text-[var(--black)] text-sm uppercase tracking-wide font-[family-name:var(--font-display)]">
                       Questions? Call Us Directly
                     </p>
-                    <a href="tel:239-332-5707" className="text-[var(--red)] font-semibold hover:text-[var(--red-dark)] transition-colors inline-block py-2 px-1">
+                    <a href="tel:+12393325707" className="text-[var(--red)] font-semibold hover:text-[var(--red-dark)] transition-colors inline-block py-2 px-1">
                       239-332-5707
                     </a>
                   </div>

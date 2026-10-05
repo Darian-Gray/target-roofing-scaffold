@@ -227,7 +227,7 @@ export default function TargetNewsPage() {
                 <ChevronRight className="w-4 h-4" />
               </Link>
               <a
-                href="tel:239-332-5707"
+                href="tel:+12393325707"
                 className="inline-flex items-center gap-2 px-10 py-4 border-2 border-[var(--black)] text-[var(--black)] text-sm font-bold uppercase tracking-wide rounded hover:bg-[var(--black)] hover:text-white transition-colors"
               >
                 <Phone className="w-4 h-4" />

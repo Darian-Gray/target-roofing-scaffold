@@ -232,7 +232,7 @@ function HeroSection() {
                 Schedule Repair
               </a>
               <a
-                href="tel:239-332-5707"
+                href="tel:+12393325707"
                 className="group inline-flex items-center justify-center gap-2 rounded border-2 border-white px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-white transition-all hover:bg-white hover:text-[var(--black)]"
               >
                 <CloudLightning className="h-4.5 w-4.5 transition-transform group-hover:scale-110" />

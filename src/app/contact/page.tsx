@@ -4,6 +4,7 @@ import { useState, type FormEvent } from 'react'
 import Image from 'next/image'
 import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react'
 import { submitContactLead } from '@/app/actions'
+import { trackLead, attributionSummary } from '@/lib/tracking'
 import AnimateIn from '@/components/AnimateIn'
 import RoofSchematic from '@/components/RoofSchematic'
 
@@ -46,8 +47,9 @@ export default function ContactPage() {
     setSuccess(false)
 
     try {
-      const res = await submitContactLead(form)
+      const res = await submitContactLead({ ...form, attribution: attributionSummary() })
       if (res.success) {
+        trackLead(res.leadId, { form_id: 'contact-page', service: form.service })
         setSuccess(true)
         setForm({
           firstName: '',
@@ -492,7 +494,7 @@ export default function ContactPage() {
                       Phone
                     </h3>
                     <a
-                      href="tel:239-332-5707"
+                      href="tel:+12393325707"
                       className="text-[var(--black)] font-medium text-base sm:text-lg hover:text-[var(--red)] transition-colors break-all inline-block py-3 px-2"
                     >
                       (239) 332-5707
@@ -560,7 +562,7 @@ export default function ContactPage() {
                     24/7 Emergency Roof Repairs Available
                   </p>
                   <a
-                    href="tel:239-332-5707"
+                    href="tel:+12393325707"
                     className="inline-flex items-center gap-1.5 xs:gap-2 sm:gap-3 text-lg xs:text-2xl md:text-3xl font-bold text-white hover:text-[var(--red-light)] transition-colors font-[family-name:var(--font-display)] break-all max-w-full min-h-[44px] py-1.5 px-2"
                   >
                     <Phone className="w-4 h-4 xs:w-7 xs:h-7 flex-shrink-0" />

@@ -233,7 +233,7 @@ function LoginForm() {
               <Phone className="h-5 w-5 text-[var(--red)]" />
               <div>
                 <p className="text-sm text-[var(--gray-400)]">Need help? Call us</p>
-                <a href="tel:239-332-5707" className="font-semibold text-white">239-332-5707</a>
+                <a href="tel:+12393325707" className="font-semibold text-white">239-332-5707</a>
               </div>
             </div>
           </div>

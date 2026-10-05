@@ -210,7 +210,7 @@ export default function EmergencyStormRepairPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a
-                href="tel:239-332-5707"
+                href="tel:+12393325707"
                 className="inline-flex items-center justify-center gap-3 px-8 py-3.5 bg-brand-gradient hover-bg-brand-gradient text-white font-bold uppercase tracking-wide rounded transition-colors shadow-lg text-sm"
               >
                 <Phone className="h-5 w-5 animate-bounce" />
@@ -240,7 +240,7 @@ export default function EmergencyStormRepairPage() {
             </div>
             <span className="hidden sm:inline text-white/40">|</span>
             <a
-              href="tel:239-332-5707"
+              href="tel:+12393325707"
               className="font-bold text-lg hover:underline font-[family-name:var(--font-display)]"
             >
               239-332-5707
@@ -319,7 +319,7 @@ export default function EmergencyStormRepairPage() {
                     </p>
                     <AnimateIn animation="scale" delay={300}>
                       <a
-                        href="tel:239-332-5707"
+                        href="tel:+12393325707"
                         className="inline-flex items-center justify-center gap-3 w-full py-4 bg-brand-gradient hover-bg-brand-gradient text-white font-bold uppercase tracking-wider rounded transition-colors text-lg font-[family-name:var(--font-display)] shadow-lg shadow-black/25"
                       >
                         <Phone className="h-6 w-6 animate-bounce" />

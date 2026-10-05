@@ -66,7 +66,7 @@ export default function SoftwashPage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <a
-                href="tel:239-332-5707"
+                href="tel:+12393325707"
                 className="inline-flex items-center justify-center gap-2 px-10 py-4 border-2 border-white text-white font-bold uppercase tracking-wide rounded hover:bg-white/10 transition-colors text-sm"
               >
                 <Phone className="h-4 w-4" />
@@ -134,7 +134,7 @@ export default function SoftwashPage() {
             Get your free same-day estimate now.
           </p>
           <a
-            href="tel:239-332-5707"
+            href="tel:+12393325707"
             className="inline-flex items-center gap-3 text-2xl md:text-3xl font-bold text-white hover:scale-[1.02] transition-transform font-[family-name:var(--font-display)] border-2 border-white px-8 py-3 rounded"
           >
             <Phone className="h-6 w-6" />

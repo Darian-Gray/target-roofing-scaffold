@@ -62,7 +62,7 @@ export default function InlineLeadForm({
     try {
       const res = await submitContactLead({ ...form, attribution: attributionSummary() })
       if (res.success) {
-        trackLead({ form_id: formId, service: form.service })
+        trackLead(res.leadId, { form_id: formId, service: form.service })
         setSuccess(true)
         setForm({
           firstName: '',

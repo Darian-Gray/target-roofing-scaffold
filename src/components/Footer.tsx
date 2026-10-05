@@ -49,7 +49,7 @@ export default function Footer() {
               Get a Free Estimate
             </Link>
             <a
-              href="tel:239-332-5707"
+              href="tel:+12393325707"
               className="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-white text-white font-bold uppercase tracking-wide rounded hover:bg-white/10 transition-colors"
             >
               <Phone className="h-5 w-5" />
@@ -150,8 +150,10 @@ export default function Footer() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[var(--gray-500)]">
             <p>&copy; {new Date().getFullYear()} Target Roofing. All rights reserved. License #CCC1334168</p>
-            <div className="flex items-center gap-6">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
               <span>Serving Lee, Collier, Charlotte & Sarasota Counties</span>
+              <Link href="/website-privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <Link href="/mobile-privacy-policy" className="hover:text-white transition-colors">Mobile Privacy Policy</Link>
             </div>
           </div>
         </div>

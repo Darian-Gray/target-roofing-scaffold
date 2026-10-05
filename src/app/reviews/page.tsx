@@ -234,7 +234,7 @@ export default async function ReviewsPage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <a
-                href="tel:239-332-5707"
+                href="tel:+12393325707"
                 className="inline-flex items-center gap-2 px-8 py-4 border-2 border-white/30 text-white font-bold uppercase tracking-wide rounded hover:bg-white/10 transition-colors text-sm"
               >
                 <Phone className="h-4 w-4" />

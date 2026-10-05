@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Shield } from 'lucide-react'
-import { verifyAdminLogin, getAdminAutofill } from '@/app/actions'
+import { verifyAdminLogin } from '@/app/actions'
 
 export default function AdminLogin() {
   const router = useRouter()
@@ -21,21 +21,14 @@ export default function AdminLogin() {
     else { setError(result.error || 'Invalid admin credentials. Access Denied.'); setLoading(false) }
   }
 
-  // Pre-launch shortcut: triple-click the Admin Access badge to fill the credentials.
-  const handleBadgeClick = async (e: React.MouseEvent) => {
-    if (e.detail !== 3) return
-    const creds = await getAdminAutofill()
-    if (creds) { setEmail(creds.email); setPassword(creds.password) }
-  }
-
   return (
     <div className="fixed inset-0 z-[100] overflow-y-auto bg-[var(--gray-50)] flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white border border-[var(--gray-200)] rounded-xl shadow-2xl p-8">
         <div className="text-center mb-8">
-          <button type="button" onClick={handleBadgeClick} className="mb-4 inline-flex items-center gap-2 rounded-full bg-[var(--red)]/10 px-4 py-1.5 text-xs font-bold text-[var(--red)] uppercase tracking-wider select-none">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[var(--red)]/10 px-4 py-1.5 text-xs font-bold text-[var(--red)] uppercase tracking-wider select-none">
             <Shield className="h-4 w-4" />
             Admin Access
-          </button>
+          </div>
           <h1 className="text-3xl font-bold font-[family-name:var(--font-display)] uppercase tracking-tight text-[var(--black)]">Target Management</h1>
           <p className="text-xs text-[var(--gray-400)] font-semibold mt-1">Target Roofing Administrative Console</p>
         </div>

@@ -465,7 +465,7 @@ export default function Header() {
                 </Link>
                 <span className="hidden sm:inline h-4 w-px bg-white/30" aria-hidden="true" />
                 <a
-                  href="tel:239-332-5707"
+                  href="tel:+12393325707"
                   className="flex items-center gap-2 font-semibold hover:text-white/90 transition-colors min-h-[48px] px-2"
                 >
                   <Phone className="h-3.5 w-3.5" />

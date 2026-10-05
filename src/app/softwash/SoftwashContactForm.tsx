@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { ArrowRight, CheckCircle } from 'lucide-react'
 import { submitSoftwashLead } from '@/app/actions'
+import { trackLead } from '@/lib/tracking'
 
 export default function SoftwashContactForm() {
   const [formData, setFormData] = useState({
@@ -37,6 +38,7 @@ export default function SoftwashContactForm() {
     try {
       const res = await submitSoftwashLead(formData)
       if (res.success) {
+        trackLead(res.leadId, { form_id: 'softwash', service: 'softwash' })
         setSubmitted(true)
       } else {
         setErrors(res.errors || {})

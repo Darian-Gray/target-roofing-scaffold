@@ -37,6 +37,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/roofing-services/roof-inspections-surveys',
     '/financing',
     '/warranties',
+    '/website-privacy-policy',
+    '/mobile-privacy-policy',
     '/commercial-hoa-roof-maintenance',
     '/locations',
   ]

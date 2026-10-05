@@ -249,7 +249,7 @@ export default function RoofingServicesPage() {
                     <p className="font-bold text-[var(--black)] text-sm uppercase tracking-wide font-[family-name:var(--font-display)]">
                       24/7/365 Emergency Response
                     </p>
-                    <a href="tel:239-332-5707" className="text-[var(--red)] font-semibold hover:text-[var(--red-dark)] transition-colors inline-block py-3 px-2">
+                    <a href="tel:+12393325707" className="text-[var(--red)] font-semibold hover:text-[var(--red-dark)] transition-colors inline-block py-3 px-2">
                       239-332-5707
                     </a>
                   </div>
@@ -280,7 +280,7 @@ export default function RoofingServicesPage() {
                     <div>
                       <AnimateIn animation="scale" delay={300}>
                         <a
-                          href="tel:239-332-5707"
+                          href="tel:+12393325707"
                           className="inline-flex items-center justify-center gap-3 w-full py-4 bg-brand-gradient hover-bg-brand-gradient text-white font-bold uppercase tracking-wider rounded transition-colors text-lg font-[family-name:var(--font-display)] shadow-lg shadow-black/25"
                         >
                           <Phone className="h-6 w-6 animate-bounce" />

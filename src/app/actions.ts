@@ -7,10 +7,14 @@ import { setAdminSession, clearAdminSession } from '@/lib/ops/session'
 // Admin Authentication
 // ---------------------------------------------------------------------------
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@targetroofers.com'
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'target2026'
+// Credentials come only from the environment. With either one unset, admin login is refused.
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || ''
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || ''
 
 export async function verifyAdminLogin(email: string, password: string): Promise<{ success: boolean; error?: string }> {
+  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+    return { success: false, error: 'Admin login is not configured.' }
+  }
   if (email.trim().toLowerCase() === ADMIN_EMAIL.toLowerCase() && password === ADMIN_PASSWORD) {
     await setAdminSession(ADMIN_EMAIL)
     return { success: true }
@@ -22,19 +26,14 @@ export async function logoutAdmin() {
   await clearAdminSession()
 }
 
-// TEMPORARY pre-launch shortcut: triple-click the "Admin Access" badge on the login screen
-// to fill the admin credentials. Turn off by setting ADMIN_AUTOFILL=off, and remove before launch.
-export async function getAdminAutofill(): Promise<{ email: string; password: string } | null> {
-  if (process.env.ADMIN_AUTOFILL === 'off') return null
-  return { email: ADMIN_EMAIL, password: ADMIN_PASSWORD }
-}
-
 // ---------------------------------------------------------------------------
 // Leads
 // ---------------------------------------------------------------------------
 
 interface LeadSaveResult {
   success: boolean
+  /** ID of the saved lead row. The OpenAI lead_created event uses it as a stable event_id. */
+  leadId?: string
   error?: string
   errors?: Record<string, string>
 }
@@ -61,21 +60,25 @@ async function saveLead(
   data: Record<string, string | undefined>
 ): Promise<LeadSaveResult> {
   try {
-    const { error } = await supabase.from('leads').insert({
-      form_type: formType,
-      first_name: data.firstName,
-      last_name: data.lastName,
-      email: data.email,
-      phone: data.phone,
-      street_address: data.streetAddress,
-      city: data.city,
-      zip: data.zip,
-      service: data.service,
-      message: data.message,
-      service_address: data.serviceAddress,
-    })
+    const { data: row, error } = await supabase
+      .from('leads')
+      .insert({
+        form_type: formType,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        street_address: data.streetAddress,
+        city: data.city,
+        zip: data.zip,
+        service: data.service,
+        message: data.message,
+        service_address: data.serviceAddress,
+      })
+      .select('id')
+      .single()
     if (error) throw error
-    return { success: true }
+    return { success: true, leadId: row?.id != null ? String(row.id) : undefined }
   } catch (error) {
     console.error('Error saving lead:', error)
     return { success: false, error: 'Failed to save lead details.' }
