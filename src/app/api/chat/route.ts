@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenAI } from '@google/genai'
 import { supabase } from '@/lib/supabase'
+import { recipientList, sendNotification } from '@/lib/notify'
 
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_API_KEY! })
 
@@ -56,18 +57,43 @@ export async function POST(request: NextRequest) {
       try {
         const leadData = JSON.parse(leadMatch[1])
         const nameParts = (leadData.firstName || '').split(' ')
-        await supabase.from('leads').insert({
+        const firstName = nameParts[0] || leadData.firstName
+        const lastName = leadData.lastName || nameParts.slice(1).join(' ') || ''
+        const { data: lead, error } = await supabase.from('leads').insert({
           form_type: 'contact',
-          first_name: nameParts[0] || leadData.firstName,
-          last_name: leadData.lastName || nameParts.slice(1).join(' ') || '',
+          first_name: firstName,
+          last_name: lastName,
           email: leadData.email,
           phone: leadData.phone,
           street_address: leadData.address,
           service: leadData.roofType || 'Inspection',
           message: leadData.issue || 'Chatbot lead - inspection request',
+        }).select('id').single()
+        if (error) throw error
+
+        const notification = await sendNotification({
+          to: recipientList(process.env.LEAD_NOTIFY_TO),
+          subject: 'Website Lead - Chatbot',
+          heading: 'New chatbot inspection request',
+          fromName: 'Website Inquiry',
+          replyTo: leadData.email,
+          fields: [
+            ['Name', [firstName, lastName].filter(Boolean).join(' ')],
+            ['Phone', leadData.phone],
+            ['Email', leadData.email],
+            ['Property address', leadData.address],
+            ['Roof type', leadData.roofType],
+            ['Issue', leadData.issue],
+            ['Lead ID', lead?.id],
+            ['Lead manager', (process.env.NEXT_PUBLIC_SITE_URL || 'https://targetroofers.com') + '/admin'],
+          ],
         })
-      } catch {
-        // Lead save failed silently - don't break the chat
+        if (!notification.sent) console.error('[chat] Lead saved but notification not sent:', lead?.id, notification.error)
+      } catch (error) {
+        console.error('[chat] Could not save chatbot lead:', error)
+        return NextResponse.json({
+          message: 'I could not submit your request. Please call us at 239-332-5707 so we can help you directly.',
+        }, { status: 500 })
       }
     }
 
