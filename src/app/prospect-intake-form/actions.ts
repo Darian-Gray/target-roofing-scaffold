@@ -35,7 +35,8 @@ export async function submitProspectIntake(input: ProspectIntakeInput): Promise<
 
   if (t(input.customerFirstName).length < 1) errors.customerFirstName = 'First name is required.'
   if (t(input.customerLastName).length < 1) errors.customerLastName = 'Last name is required.'
-  if (!(INTAKE_CREATORS as readonly string[]).includes(input.createdBy)) errors.createdBy = 'Choose who created the project.'
+  const creator = INTAKE_CREATORS.find((c) => c.name === input.createdBy)
+  if (!creator) errors.createdBy = 'Choose who created the project.'
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t(input.customerEmail))) errors.customerEmail = 'A valid customer email is required.'
   if (!/^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/.test(t(input.customerPhone))) errors.customerPhone = 'A valid 10-digit phone number is required.'
   const rep = INTAKE_SALESPEOPLE.find((p) => p.name === input.salesperson)
@@ -43,7 +44,7 @@ export async function submitProspectIntake(input: ProspectIntakeInput): Promise<
   if (t(input.projectName).length < 1) errors.projectName = 'Project name is required.'
   if (t(input.bidDueDate) && !/^\d{4}-\d{2}-\d{2}$/.test(t(input.bidDueDate))) errors.bidDueDate = 'Use a valid date.'
 
-  if (Object.keys(errors).length > 0 || !rep) {
+  if (Object.keys(errors).length > 0 || !rep || !creator) {
     return { success: false, errors, error: 'Please correct the highlighted fields.' }
   }
 
@@ -71,10 +72,12 @@ export async function submitProspectIntake(input: ProspectIntakeInput): Promise<
 
   const customer = `${t(input.customerFirstName)} ${t(input.customerLastName)}`
   const sent = await sendNotification({
-    to: recipientList(rep.email, process.env.INTAKE_NOTIFY_TO),
-    subject: `New prospect: ${t(input.projectName)} (${customer})`,
-    heading: `New prospect assigned to ${rep.name}`,
-    replyTo: t(input.customerEmail),
+    // Same routing and subject as the WordPress form: to the person who created the project.
+    to: recipientList(creator.notifyEmail, process.env.INTAKE_NOTIFY_TO),
+    subject: 'Prospect Intake Form Submission',
+    heading: `New prospect: ${t(input.projectName)}`,
+    fromName: 'Target Roofing',
+    replyTo: process.env.INTAKE_REPLY_TO || undefined,
     fields: [
       ['Project name', t(input.projectName)],
       ['Customer', customer],

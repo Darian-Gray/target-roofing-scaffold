@@ -72,8 +72,8 @@ export default function ProspectIntakeForm({ creators, salespeople }: { creators
         <h2 className="text-2xl font-bold uppercase mb-2 font-[family-name:var(--font-display)] text-[var(--black)]">Prospect submitted</h2>
         <p className="text-[var(--gray-600)]">
           {done.notified
-            ? 'The assigned salesperson has been emailed the details.'
-            : 'The prospect was saved, but the notification email did not go out. Please let the salesperson know directly.'}
+            ? 'The notification email has been sent.'
+            : 'The prospect was saved, but the notification email did not go out. Please let the office know directly.'}
         </p>
         <button type="button" onClick={() => setDone(null)} className="mt-6 text-sm font-bold text-[var(--red)] underline underline-offset-2">
           Submit another prospect

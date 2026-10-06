@@ -6,10 +6,12 @@ import nodemailer, { type Transporter } from 'nodemailer'
  *
  * Environment:
  *   SMTP_HOST, SMTP_PORT (465 = TLS, 587 = STARTTLS), SMTP_USER, SMTP_PASS
- *   NOTIFY_FROM          e.g. "Target Roofing Website <website@targetroofers.com>" (defaults to SMTP_USER)
- *   LEAD_NOTIFY_TO       comma-separated recipients for contact / estimate leads
- *   SOFTWASH_NOTIFY_TO   comma-separated recipients for softwash leads (falls back to LEAD_NOTIFY_TO)
- *   INTAKE_NOTIFY_TO     comma-separated office copy for Prospect Intake submissions
+ *   NOTIFY_FROM          sending address, e.g. "Website Inquiry <website@targetroofers.com>" (defaults to SMTP_USER)
+ *   CONTACT_NOTIFY_TO    recipients for the contact page form (WordPress Contact US form went to service@)
+ *   LEAD_NOTIFY_TO       recipients for estimate forms (WordPress Free Estimate / Short Form went to projects@)
+ *   SOFTWASH_NOTIFY_TO   recipients for softwash requests
+ *   INTAKE_NOTIFY_TO     optional extra recipients for Prospect Intake submissions
+ *   INTAKE_REPLY_TO      optional reply-to for Prospect Intake notifications
  *
  * A notification never blocks a submission: the record is saved first, and a failed or
  * unconfigured send is logged and reported back to the caller.
@@ -43,6 +45,14 @@ function getTransport(): Transporter | null {
   return transporter
 }
 
+/** The From header: NOTIFY_FROM (or SMTP_USER), optionally with a different display name. */
+function fromHeader(fromName?: string): string | undefined {
+  const configured = process.env.NOTIFY_FROM || process.env.SMTP_USER
+  if (!configured || !fromName) return configured
+  const address = configured.match(/<([^>]+)>/)?.[1] || configured.trim()
+  return `"${fromName.replace(/"/g, '')}" <${address}>`
+}
+
 function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)
 }
@@ -53,6 +63,8 @@ export async function sendNotification(opts: {
   heading: string
   fields: NotifyField[]
   replyTo?: string
+  /** Display name for the From header; the address always comes from NOTIFY_FROM / SMTP_USER. */
+  fromName?: string
 }): Promise<NotifyResult> {
   if (!opts.to.length) {
     console.warn('[notify] No recipients configured for:', opts.subject)
@@ -81,7 +93,7 @@ ${rows
   try {
     await Promise.race([
       transport.sendMail({
-        from: process.env.NOTIFY_FROM || process.env.SMTP_USER,
+        from: fromHeader(opts.fromName),
         to: opts.to,
         replyTo: opts.replyTo || undefined,
         subject: opts.subject,

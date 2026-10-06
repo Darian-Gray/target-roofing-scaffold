@@ -56,6 +56,10 @@ export interface LeadRecord {
   service_address?: string
 }
 
+// Routing and subjects match the WordPress notifications they replace, so inbox filters keep working:
+//   contact page  -> Contact US (Gravity Form 1)            -> CONTACT_NOTIFY_TO (service@)
+//   estimate forms-> Free Estimate / Short Form (Forms 8, 7) -> LEAD_NOTIFY_TO (projects@)
+//   softwash      -> Softwash plugin form                    -> SOFTWASH_NOTIFY_TO
 async function notifyNewLead(
   formType: 'contact' | 'softwash',
   data: Record<string, string | undefined>,
@@ -68,31 +72,38 @@ async function notifyNewLead(
     ['Phone', data.phone],
     ['Email', data.email],
   ]
-  const result =
-    formType === 'softwash'
-      ? await sendNotification({
-          to: recipientList(process.env.SOFTWASH_NOTIFY_TO || process.env.LEAD_NOTIFY_TO),
-          subject: `New softwash lead: ${name}`,
-          heading: 'New softwash request from the website',
-          replyTo: data.email,
-          fields: [...common, ['Service address', data.serviceAddress], ['Lead ID', leadId], ['Lead manager', `${site}/admin`]],
-        })
-      : await sendNotification({
-          to: recipientList(process.env.LEAD_NOTIFY_TO),
-          subject: `New website lead: ${name}${data.service ? ` (${data.service})` : ''}`,
-          heading: 'New estimate request from the website',
-          replyTo: data.email,
-          fields: [
-            ...common,
-            ['Street address', data.streetAddress],
-            ['City', data.city],
-            ['ZIP', data.zip],
-            ['Service', data.service],
-            ['Message', data.message],
-            ['Lead ID', leadId],
-            ['Lead manager', `${site}/admin`],
-          ],
-        })
+  const leadRows: NotifyField[] = [['Lead ID', leadId], ['Lead manager', `${site}/admin`]]
+
+  let result
+  if (formType === 'softwash') {
+    result = await sendNotification({
+      to: recipientList(process.env.SOFTWASH_NOTIFY_TO),
+      subject: `New Softwash Lead from ${name}`,
+      heading: 'New softwash request from the website',
+      fromName: 'Target Roofing',
+      replyTo: data.email,
+      fields: [...common, ['Service address', data.serviceAddress], ...leadRows],
+    })
+  } else {
+    const fromContactPage = data.source === 'contact-page'
+    result = await sendNotification({
+      to: recipientList(fromContactPage ? process.env.CONTACT_NOTIFY_TO : process.env.LEAD_NOTIFY_TO),
+      subject: fromContactPage ? 'Target Roofing - New submission from Contact US' : 'Website Lead',
+      heading: fromContactPage ? 'New contact form submission' : 'New estimate request from the website',
+      fromName: 'Website Inquiry',
+      replyTo: data.email,
+      fields: [
+        ...common,
+        ['Street address', data.streetAddress],
+        ['City', data.city],
+        ['ZIP', data.zip],
+        ['Service', data.service],
+        ['Message', data.message],
+        ['Page', fromContactPage ? 'Contact page' : 'Estimate form'],
+        ...leadRows,
+      ],
+    })
+  }
   if (!result.sent) console.error('[leads] Lead saved but notification not sent:', leadId, result.error)
 }
 
@@ -140,6 +151,8 @@ export async function submitContactLead(formData: {
   message: string
   /** Ad attribution (UTMs + OpenAI click id), captured client-side. Stored with the lead. */
   attribution?: string
+  /** Which form sent it: decides who gets the notification. Defaults to an estimate form. */
+  source?: 'contact-page' | 'estimate'
 }) {
   const errors: Record<string, string> = {}
 

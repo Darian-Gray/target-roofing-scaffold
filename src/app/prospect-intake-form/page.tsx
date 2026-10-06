@@ -16,12 +16,12 @@ export default function ProspectIntakePage() {
           <h1 className="text-4xl sm:text-5xl font-bold uppercase tracking-tight font-[family-name:var(--font-display)]">
             Prospect Intake Form
           </h1>
-          <p className="mt-3 text-sm text-white/70">Internal form for the Target Roofing team. Submissions go to the assigned salesperson.</p>
+          <p className="mt-3 text-sm text-white/70">Internal form for the Target Roofing team.</p>
         </div>
       </section>
       <section className="bg-[var(--gray-50)]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14">
-          <ProspectIntakeForm creators={[...INTAKE_CREATORS]} salespeople={INTAKE_SALESPEOPLE.map((p) => p.name)} />
+          <ProspectIntakeForm creators={INTAKE_CREATORS.map((c) => c.name)} salespeople={INTAKE_SALESPEOPLE.map((p) => p.name)} />
         </div>
       </section>
     </>
