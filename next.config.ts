@@ -66,7 +66,6 @@ const LEGACY_PAGE_REDIRECTS: Record<string, string> = {
   '/roof-cleaning-system': '/softwash',
   '/googlereview': '/reviews',
   '/video-gallery-test': '/video-gallery',
-  '/prospect-intake-form': '/contact',
   '/contact-us': '/contact',
   '/thank-you': '/',
   '/thank-you-sem': '/',
@@ -97,7 +96,7 @@ const LEGACY_SECTION_REDIRECTS: Record<string, string> = {
 // Top-level routes on this site; a blog slug never shadows one of these.
 const RESERVED_TOP_LEVEL = new Set([
   'about', 'admin', 'api', 'careers', 'commercial-hoa-roof-maintenance', 'contact', 'financing',
-  'locations', 'mobile-privacy-policy', 'our-process', 'our-projects', 'our-team', 'podcast',
+  'locations', 'mobile-privacy-policy', 'our-process', 'prospect-intake-form', 'our-projects', 'our-team', 'podcast',
   'portal', 'reviews', 'roofing-services', 'softwash', 'target-news', 'video-gallery',
   'warranties', 'website-privacy-policy',
 ])

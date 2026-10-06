@@ -2,6 +2,7 @@
 
 import { supabase } from '@/lib/supabase'
 import { setAdminSession, clearAdminSession } from '@/lib/ops/session'
+import { sendNotification, recipientList, type NotifyField } from '@/lib/notify'
 
 // ---------------------------------------------------------------------------
 // Admin Authentication
@@ -55,6 +56,46 @@ export interface LeadRecord {
   service_address?: string
 }
 
+async function notifyNewLead(
+  formType: 'contact' | 'softwash',
+  data: Record<string, string | undefined>,
+  leadId: string | undefined
+): Promise<void> {
+  const name = [data.firstName, data.lastName].filter(Boolean).join(' ')
+  const site = process.env.NEXT_PUBLIC_SITE_URL || 'https://targetroofers.com'
+  const common: NotifyField[] = [
+    ['Name', name],
+    ['Phone', data.phone],
+    ['Email', data.email],
+  ]
+  const result =
+    formType === 'softwash'
+      ? await sendNotification({
+          to: recipientList(process.env.SOFTWASH_NOTIFY_TO || process.env.LEAD_NOTIFY_TO),
+          subject: `New softwash lead: ${name}`,
+          heading: 'New softwash request from the website',
+          replyTo: data.email,
+          fields: [...common, ['Service address', data.serviceAddress], ['Lead ID', leadId], ['Lead manager', `${site}/admin`]],
+        })
+      : await sendNotification({
+          to: recipientList(process.env.LEAD_NOTIFY_TO),
+          subject: `New website lead: ${name}${data.service ? ` (${data.service})` : ''}`,
+          heading: 'New estimate request from the website',
+          replyTo: data.email,
+          fields: [
+            ...common,
+            ['Street address', data.streetAddress],
+            ['City', data.city],
+            ['ZIP', data.zip],
+            ['Service', data.service],
+            ['Message', data.message],
+            ['Lead ID', leadId],
+            ['Lead manager', `${site}/admin`],
+          ],
+        })
+  if (!result.sent) console.error('[leads] Lead saved but notification not sent:', leadId, result.error)
+}
+
 async function saveLead(
   formType: 'contact' | 'softwash' | 'portal_login',
   data: Record<string, string | undefined>
@@ -78,7 +119,9 @@ async function saveLead(
       .select('id')
       .single()
     if (error) throw error
-    return { success: true, leadId: row?.id != null ? String(row.id) : undefined }
+    const leadId = row?.id != null ? String(row.id) : undefined
+    if (formType !== 'portal_login') await notifyNewLead(formType, data, leadId)
+    return { success: true, leadId }
   } catch (error) {
     console.error('Error saving lead:', error)
     return { success: false, error: 'Failed to save lead details.' }
