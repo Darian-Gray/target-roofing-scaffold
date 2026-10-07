@@ -191,7 +191,7 @@ export default async function BlogPostDetailPage({ params }: PageProps) {
                     </p>
                     <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                       <Link
-                        href="/contact"
+                        href="/contact?service=free-estimate"
                         className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--red)] text-white text-sm font-bold uppercase tracking-wider rounded hover:bg-[var(--red-dark)] transition-colors shadow-md hover:shadow-lg font-[family-name:var(--font-display)]"
                       >
                         Request a Free Estimate
@@ -247,7 +247,7 @@ export default async function BlogPostDetailPage({ params }: PageProps) {
                     </p>
                     <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                       <Link
-                        href="/contact"
+                        href="/contact?service=free-estimate"
                         className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--red)] text-white text-sm font-bold uppercase tracking-wider rounded hover:bg-[var(--red-dark)] transition-colors shadow-md hover:shadow-lg font-[family-name:var(--font-display)]"
                       >
                         Request a Free Estimate
