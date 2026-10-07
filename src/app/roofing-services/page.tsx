@@ -449,6 +449,7 @@ export default function RoofingServicesPage() {
             <div className="max-w-2xl mx-auto text-center">
               <p className="text-[var(--gray-600)] leading-relaxed">
                 We are happy to provide references from the many property owners, property managers and condo/HOA boards we have served through replacement transitions over the years.
+                <Link href="/roofing-services/roof-replacement" className="block mt-5 font-bold text-[var(--red)] underline underline-offset-4">Explore roof replacement systems and planning</Link>
               </p>
             </div>
           </AnimateIn>
