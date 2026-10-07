@@ -26,7 +26,7 @@ import { CITIES, CITY_MAP } from '@/lib/locations'
 export const metadata: Metadata = {
   title: 'Roof Repair in Fort Myers & SW Florida',
   description:
-    'Fast, honest roof repair and leak fixes for SW Florida homes and businesses. 24/7 storm-damage response and free repair surveys. Call 239-332-5707.',
+    'Roof repair and leak evaluation for Southwest Florida homes, businesses and HOAs. Discuss storm damage, repair options and current availability. Call 239-332-5707.',
   alternates: { canonical: '/roofing-services/roof-repair' },
   keywords: [
     'roof repair',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Roof Repair in Fort Myers & Southwest Florida | Target Roofing',
     description:
-      'Fast, honest roof repair and leak fixes for homes and businesses across Southwest Florida. 24/7 storm-damage response and free repair surveys.',
+      'Roof repair and leak evaluation for homes, businesses and HOAs across Southwest Florida. Compare repair options and discuss current availability.',
     url: 'https://targetroofers.com/roofing-services/roof-repair',
     type: 'website',
     images: [
@@ -90,7 +90,7 @@ const repairFaqs = [
     a: 'If the roof is relatively young, the leak is isolated, and the deck is sound, a repair is the smart, affordable choice. If you are repairing it every storm season or a large share of the roof is failing, a replacement usually costs less over time. We show you both numbers with photos and let you decide - no pressure.',
   },
   {
-    q: 'Do you offer 24/7 emergency roof repair?',
+    q: 'What should I do about an active roof leak or storm damage?',
     a: 'For an active leak or storm damage, call 239-332-5707 to discuss the condition of the property and current availability. Emergency stabilization and permanent repair are different steps; access, weather and the extent of damage affect the response.',
   },
   {
@@ -118,7 +118,7 @@ export default function RoofRepairPage() {
             '@type': 'Service',
             name: 'Roof Repair',
             description:
-              'Fast, honest roof repair and leak fixes for residential and commercial properties across Southwest Florida, including 24/7 emergency and storm-damage response.',
+              'Roof repair and leak evaluation for residential and commercial properties across Southwest Florida, including assessment of storm damage and repair options.',
             provider: {
               '@type': 'RoofingContractor',
               '@id': 'https://targetroofers.com',
@@ -182,10 +182,10 @@ export default function RoofRepairPage() {
               Roof Repair
             </h1>
             <p className="text-lg md:text-xl text-[var(--gray-300)] leading-relaxed mb-8 max-w-2xl">
-              A leak does not wait for business hours, and neither do we. Target
-              Roofing fixes roof leaks, storm damage, and failing flashing across
-              Southwest Florida - fast, honestly, and backed by a one-year
-              workmanship warranty.
+              Target Roofing evaluates roof leaks, storm damage and failing
+              flashing across Southwest Florida. Discuss the roof condition,
+              repair scope, current availability and written warranty terms
+              with our team.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a
@@ -207,14 +207,14 @@ export default function RoofRepairPage() {
         </div>
       </section>
 
-      {/* ==================== 24/7 DISPATCH BANNER ==================== */}
+      {/* ==================== REPAIR CONTACT BANNER ==================== */}
       <section className="bg-[var(--red)] text-white py-4">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-white animate-pulse" />
               <span className="font-bold uppercase tracking-wider text-sm font-[family-name:var(--font-display)]">
-                24/7 Emergency Repair
+                Active Roof Leak? Call to Discuss Availability
               </span>
             </div>
             <span className="hidden sm:inline text-white/40">|</span>
@@ -309,9 +309,9 @@ export default function RoofRepairPage() {
                       Find the Leak. Fix the Cause.
                     </h4>
                     <p className="text-sm text-[var(--gray-300)] leading-relaxed mb-6">
-                      We photograph the damage, trace the leak to its source, and
-                      hand you an itemized, no-obligation estimate - usually
-                      within 24 hours of your call.
+                      Share the leak history and request a roof evaluation.
+                      Review the condition findings, proposed scope and expected
+                      estimate timing with the team.
                     </p>
                     <a
                       href="tel:+12393325707"
@@ -483,9 +483,9 @@ export default function RoofRepairPage() {
               </AnimateIn>
               <AnimateIn animation="fade-up" delay={200}>
                 <p className="text-[var(--gray-400)] leading-relaxed mb-8">
-                  We respond 24/7/365 and document the damage with dated photos
-                  before we touch anything, then work directly with your insurance
-                  adjuster so the claim reflects the full scope of the storm. If
+                  Call to discuss the damage, safe access and current availability.
+                  Keep dated photographs and earlier repair records for the roof
+                  evaluation and any insurance review. If
                   the damage is repairable, we repair it. If your carrier approves
                   a replacement, we handle that too. Either way, you get the
                   documentation the claim requires - and you never sign with an
@@ -507,8 +507,8 @@ export default function RoofRepairPage() {
               {[
                 {
                   icon: Clock,
-                  title: 'Under 2-Hour Emergency Response',
-                  desc: 'Active leak in a storm? Our local crews tarp and stabilize the property fast, day or night, before water spreads.',
+                  title: 'Discuss Immediate Stabilization',
+                  desc: 'Describe the active leak and areas affected. Weather, safe access and site conditions determine the options and timing for temporary stabilization.',
                 },
                 {
                   icon: FileText,
@@ -576,9 +576,9 @@ export default function RoofRepairPage() {
               <div className="grid sm:grid-cols-2 gap-4">
                 {[
                   'Free photo-documented repair survey',
-                  'Itemized repair estimate within 24 hours',
+                  'Itemized repair scope with timing discussed',
                   'Side-by-side repair vs. replace numbers',
-                  'One-year workmanship warranty on repairs',
+                  'Written warranty terms for the proposed repair',
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3">
                     <CheckCircle className="h-5 w-5 text-[var(--red)] flex-shrink-0" />
@@ -594,14 +594,13 @@ export default function RoofRepairPage() {
               <ShieldCheck className="h-8 w-8 text-[var(--red)] flex-shrink-0" />
               <div>
                 <h3 className="font-bold text-[var(--black)] font-[family-name:var(--font-display)] uppercase tracking-wide mb-1">
-                  Backed by a One-Year Repair Warranty
+                  Review the Written Repair Warranty
                 </h3>
                 <p className="text-[var(--gray-600)] leading-relaxed text-sm">
-                  Every Target Roofing repair is covered by a one-year workmanship
-                  warranty. If a repair we made leaks again within that window, we
-                  come back and make it right at no charge. That warranty is our
-                  incentive to fix the actual problem the first time - not to sell
-                  you a temporary patch.
+                  Ask for the workmanship warranty that applies to your proposed
+                  repair. Review its duration, covered work, exclusions and how to
+                  request service. Existing manufacturer coverage may also affect
+                  the repair method and documentation required.
                 </p>
               </div>
             </div>
