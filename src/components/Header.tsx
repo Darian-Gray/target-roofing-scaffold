@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import PortalButton from './PortalButton'
 import {
   Phone,
   Menu,
@@ -446,29 +445,29 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50" ref={navRef}>
+      <header className="fixed top-0 left-0 right-0 z-50 max-w-full overflow-x-clip" ref={navRef}>
         {/* ── Top red bar ── */}
         <div className="bg-[var(--red)] text-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-12 text-sm">
-              <div className="flex items-center gap-6">
+            <div className="flex min-w-0 items-center justify-between h-12 text-sm">
+              <div className="hidden items-center gap-6 sm:flex">
                 <span className="hidden sm:inline">License #CCC1334168</span>
                 <span className="hidden lg:inline">Serving Fort Myers, Cape Coral, Naples &amp; Sarasota</span>
               </div>
-              <div className="flex items-center gap-2 sm:gap-4">
+              <div className="flex w-full min-w-0 items-center justify-between gap-1 sm:w-auto sm:justify-end sm:gap-4">
                 <Link
                   href="/roofing-services/emergency-storm-repair"
-                  className="flex items-center gap-1.5 font-bold uppercase tracking-wide hover:text-white/90 transition-colors min-h-[48px] px-2"
+                  className="flex min-w-0 items-center gap-1.5 px-1 text-xs font-bold uppercase tracking-wide transition-colors hover:text-white/90 min-h-[48px] sm:px-2 sm:text-sm"
                 >
-                  <CloudLightning className="h-4 w-4" />
+                  <CloudLightning className="h-4 w-4 shrink-0" />
                   <span className="whitespace-nowrap">24/7 Emergency</span>
                 </Link>
                 <span className="hidden sm:inline h-4 w-px bg-white/30" aria-hidden="true" />
                 <a
                   href="tel:+12393325707"
-                  className="flex items-center gap-2 font-semibold hover:text-white/90 transition-colors min-h-[48px] px-2"
+                  className="flex min-w-0 items-center justify-end gap-1.5 whitespace-nowrap px-1 text-xs font-semibold transition-colors hover:text-white/90 min-h-[48px] sm:gap-2 sm:px-2 sm:text-sm"
                 >
-                  <Phone className="h-3.5 w-3.5" />
+                  <Phone className="h-3.5 w-3.5 shrink-0" />
                   239-332-5707
                 </a>
               </div>
@@ -479,11 +478,11 @@ export default function Header() {
         {/* ── Main nav bar ── */}
         <nav className="bg-white shadow-lg relative" aria-label="Main navigation">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-20">
+            <div className="flex min-w-0 items-center justify-between h-20">
               {/* Logo */}
               <Link
                 href="/"
-                className="flex-shrink-0"
+                className="min-w-0 flex-shrink"
                 onClick={() => { setMobileMenuOpen(false); setActiveMega(null) }}
               >
                 <Image
@@ -491,7 +490,7 @@ export default function Header() {
                   alt="Target Roofing"
                   width={220}
                   height={50}
-                  className="h-12 w-auto"
+                  className="h-12 w-auto max-w-[calc(100vw-7rem)] object-contain object-left"
                   priority
                 />
               </Link>
@@ -531,8 +530,6 @@ export default function Header() {
                   </div>
                 ))}
 
-                {/* CTA Button (press-and-hold reveals the admin entrance) */}
-                <PortalButton />
               </div>
 
               {/* Mobile menu button */}
@@ -888,11 +885,6 @@ export default function Header() {
                 </div>
               )
             })}
-
-            {/* Mobile CTA (press-and-hold reveals the admin entrance) */}
-            <div className="mx-4">
-              <PortalButton fullWidth onNavigate={() => setMobileMenuOpen(false)} />
-            </div>
           </div>
         </div>
       </header>

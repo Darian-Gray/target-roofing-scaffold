@@ -118,6 +118,9 @@ function legacyBlogRedirects() {
 const nextConfig: NextConfig & { eslint?: { ignoreDuringBuilds?: boolean } } = {
   async redirects() {
     return [
+      // The former customer portal was a non-production demo. Send visitors to
+      // a real contact path without rendering credential or payment fields.
+      { source: '/portal', destination: '/contact', permanent: true },
       ...Object.entries(LEGACY_PAGE_REDIRECTS).map(([source, destination]) => ({ source, destination, permanent: true })),
       ...Object.entries(LEGACY_SECTION_REDIRECTS).flatMap(([source, destination]) => [
         { source, destination, permanent: true },

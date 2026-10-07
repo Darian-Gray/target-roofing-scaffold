@@ -86,33 +86,11 @@ test.describe('Tier 3: Cross-Feature Combinations', () => {
     await expect(page.locator('h1')).toContainText('Contact Us');
   });
 
-  test('Journey 4: Portal Login -> Dashboard Tab Navigation -> Log Out', async ({ page }) => {
-    // 1. Visit portal login
+  test('Journey 4: retired portal URL -> contact path without credential collection', async ({ page }) => {
     await page.goto('/portal');
-    await page.waitForTimeout(2000); // Ensure client-side hydration is complete
-    
-    // 2. Fill details and sign in
-    await page.fill('input[type="email"]', 'john.davis@coastal.com');
-    await page.fill('input[type="password"]', 'password123');
-    await page.click('button[type="submit"]');
-
-    // 3. Check dashboard renders
-    await expect(page.locator('text=John Davis')).toBeVisible();
-
-    // 4. Click invoices tab
-    const invoicesTab = page.locator('button:has-text("invoices")');
-    await expect(invoicesTab).toBeVisible();
-    await invoicesTab.click();
-    await expect(page.locator('text=Invoice').first()).toBeVisible();
-    await expect(page.locator('text=INV-4821')).toBeVisible();
-
-    // 5. Click sign out
-    const signOutBtn = page.locator('button:has-text("Sign Out")');
-    await expect(signOutBtn).toBeVisible();
-    await signOutBtn.click();
-
-    // 6. Verify we are back on login form
-    await expect(page.locator('text=Welcome Back')).toBeVisible();
+    await expect(page).toHaveURL(/\/contact$/);
+    await expect(page.locator('input[type="password"], input[autocomplete^="cc-"]')).toHaveCount(0);
+    await expect(page.locator('h1')).toContainText('Contact Us');
   });
 
   test('Journey 5: Softwash Page -> Roofing Services Navigation', async ({ page }) => {

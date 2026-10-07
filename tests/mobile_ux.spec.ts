@@ -12,7 +12,8 @@ const PAGES = [
   '/softwash',
   '/our-projects',
   '/target-news',
-  '/portal'
+  '/contact',
+  '/prospect-intake-form'
 ];
 
 test.describe('Mobile UX & Responsiveness Validation', () => {
@@ -21,7 +22,7 @@ test.describe('Mobile UX & Responsiveness Validation', () => {
 
   for (const url of PAGES) {
     test(`Page "${url}" should not have horizontal layout overflows`, async ({ page }) => {
-      await page.goto(url, { waitUntil: 'networkidle' });
+      await page.goto(url, { waitUntil: 'domcontentloaded' });
       await page.waitForLoadState('domcontentloaded');
 
       // Scroll down to trigger lazy loading and ensure layouts are fully calculated
@@ -81,7 +82,7 @@ test.describe('Mobile UX & Responsiveness Validation', () => {
   }
 
   test('Mobile hamburger menu should open and close successfully', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(1500); // Ensure client-side hydration and stylesheets are fully loaded
     
     // Hamburger should be visible, desktop menu should be hidden
@@ -94,17 +95,18 @@ test.describe('Mobile UX & Responsiveness Validation', () => {
     // Click hamburger to open
     await hamburger.click();
 
-    // Verify mobile menu panel has opened (displays client portal button or link)
-    const clientLogin = page.locator('.mobile-menu-container a[href="/portal"]:has-text("Customer Login")').first();
-    await expect(clientLogin).toBeVisible();
+    // Verify the mobile menu opens without exposing the retired customer portal.
+    const mobileNavigation = page.getByRole('region', { name: 'Mobile navigation' });
+    await expect(mobileNavigation).toBeVisible();
+    await expect(page.locator('a[href="/portal"]')).toHaveCount(0);
 
     // Click menu close button (SVG lucide-x is shown on toggle)
     await hamburger.click();
-    await expect(clientLogin).toBeHidden();
+    await expect(mobileNavigation).toBeHidden();
   });
 
   test('Buttons and anchors should meet WCAG touch target guidelines (min 44x44px)', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
     

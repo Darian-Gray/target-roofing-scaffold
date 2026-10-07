@@ -90,23 +90,11 @@ test.describe('Tier 4: Real-world User Scenario Flows', () => {
     await expect(page.locator('text=Thank You!')).toBeVisible();
   });
 
-  test('Scenario 4: Property Manager Project Progress Verification Flow', async ({ page }) => {
-    // 1. Property Manager logs in to portal to check active projects
+  test('Scenario 4: visitor following a saved portal URL is sent to contact safely', async ({ page }) => {
     await page.goto('/portal');
-    await page.waitForTimeout(2000); // Ensure client-side hydration is complete
-    await page.fill('input[type="email"]', 'manager@coastalrealty.com');
-    await page.fill('input[type="password"]', 'secure123');
-    await page.click('button[type="submit"]');
-
-    // 2. Manager finds the active project "Colonial Country Club" and verifies progress is 65%
-    const projectCard = page.locator('div.rounded-xl').filter({ hasText: 'Colonial Country Club - Bldg 12' }).first();
-    await expect(projectCard).toBeVisible();
-    await expect(projectCard.locator('text=65%')).toBeVisible();
-
-    // 3. Manager navigates to the messages tab to check for progress photos
-    const messagesTab = page.locator('button:has-text("messages")');
-    await messagesTab.click();
-    await expect(page.locator('text=Progress photos uploaded for Colonial Country Club')).toBeVisible();
+    await expect(page).toHaveURL(/\/contact$/);
+    await expect(page.locator('input[type="password"], input[autocomplete^="cc-"]')).toHaveCount(0);
+    await expect(page.locator('h1')).toContainText('Contact Us');
   });
 
   test('Scenario 5: Career Application Navigation Flow', async ({ page }) => {
