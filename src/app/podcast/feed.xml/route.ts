@@ -1,6 +1,7 @@
 import { db } from '@/lib/ops/db'
 
 export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 export const revalidate = 600
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
