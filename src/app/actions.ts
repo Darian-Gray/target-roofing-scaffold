@@ -1,7 +1,7 @@
 'use server'
 
 import { supabase } from '@/lib/supabase'
-import { setAdminSession, clearAdminSession } from '@/lib/ops/session'
+import { setAdminSession, clearAdminSession, requireAdmin } from '@/lib/ops/session'
 import { sendNotification, recipientList, type NotifyField } from '@/lib/notify'
 
 // ---------------------------------------------------------------------------
@@ -275,6 +275,7 @@ export async function submitPortalLogin(formData: {
 }
 
 export async function getLeads(): Promise<LeadRecord[]> {
+  await requireAdmin()
   try {
     const { data, error } = await supabase
       .from('leads')
@@ -292,6 +293,7 @@ export async function updateLeadStatus(
   id: string,
   status: 'new' | 'processed' | 'spam'
 ): Promise<{ success: boolean; error?: string }> {
+  await requireAdmin()
   try {
     const { error } = await supabase
       .from('leads')
@@ -325,6 +327,7 @@ export async function addReview(reviewData: {
   text: string
   date?: string
 }) {
+  await requireAdmin()
   try {
     const { error } = await supabase.from('reviews').insert({
       name: reviewData.name,
@@ -341,6 +344,7 @@ export async function addReview(reviewData: {
 }
 
 export async function getSeoConfig() {
+  await requireAdmin()
   try {
     const { data, error } = await supabase.from('seo_config').select('*')
     if (error) throw error
@@ -356,6 +360,7 @@ export async function getSeoConfig() {
 }
 
 export async function updateSeoConfig(route: string, data: { title: string; description: string; keywords: string }) {
+  await requireAdmin()
   try {
     const { error } = await supabase
       .from('seo_config')
@@ -423,6 +428,7 @@ export async function addShowcaseVideo(data: {
   description: string
   duration: string
 }): Promise<{ success: boolean; error?: string }> {
+  await requireAdmin()
   try {
     const { data: existing } = await supabase
       .from('showcase_videos')
@@ -458,6 +464,7 @@ export async function addShowcaseVideo(data: {
 }
 
 export async function removeShowcaseVideo(videoId: string): Promise<{ success: boolean; error?: string }> {
+  await requireAdmin()
   try {
     const { error } = await supabase
       .from('showcase_videos')
@@ -472,6 +479,7 @@ export async function removeShowcaseVideo(videoId: string): Promise<{ success: b
 }
 
 export async function reorderShowcaseVideos(ids: string[]): Promise<{ success: boolean; error?: string }> {
+  await requireAdmin()
   try {
     for (let i = 0; i < ids.length; i++) {
       const { error } = await supabase
@@ -525,6 +533,7 @@ export async function addJobListing(data: {
   description: string
   requirements: string[]
 }): Promise<{ success: boolean; error?: string }> {
+  await requireAdmin()
   try {
     const { error } = await supabase.from('job_listings').insert({
       title: data.title,
@@ -546,6 +555,7 @@ export async function updateJobListing(
   id: string,
   data: Partial<Omit<JobListing, 'id' | 'created_at'>>
 ): Promise<{ success: boolean; error?: string }> {
+  await requireAdmin()
   try {
     const { error } = await supabase
       .from('job_listings')
@@ -560,6 +570,7 @@ export async function updateJobListing(
 }
 
 export async function removeJobListing(id: string): Promise<{ success: boolean; error?: string }> {
+  await requireAdmin()
   try {
     const { error } = await supabase
       .from('job_listings')
@@ -574,6 +585,7 @@ export async function removeJobListing(id: string): Promise<{ success: boolean; 
 }
 
 export async function toggleJobListing(id: string): Promise<{ success: boolean; error?: string }> {
+  await requireAdmin()
   try {
     const { data: listing, error: fetchError } = await supabase
       .from('job_listings')
