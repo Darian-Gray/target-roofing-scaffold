@@ -214,18 +214,11 @@ test.describe('Tier 1: Feature Coverage', () => {
       await expect(successMessage).toBeVisible();
     });
 
-    test('Portal Login Form: should log in successfully with valid credentials and show dashboard', async ({ page }) => {
+    test('retired customer portal redirects safely without rendering credential fields', async ({ page }) => {
       await page.goto('/portal');
-      await page.waitForTimeout(2000); // Ensure client-side hydration is complete
-      
-      await page.fill('input[type="email"]', 'manager@coastalrealty.com');
-      await page.fill('input[type="password"]', 'secure123');
-      
-      await page.click('button[type="submit"]');
-      
-      // Verify dashboard is shown
-      await expect(page.locator('text=Good Morning, John')).toBeVisible();
-      await expect(page.locator('text=Active Projects')).toBeVisible();
+      await expect(page).toHaveURL(/\/contact$/);
+      await expect(page.locator('input[type="password"]')).toHaveCount(0);
+      await expect(page.locator('h1')).toContainText('Contact Us');
     });
   });
 });

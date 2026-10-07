@@ -100,25 +100,12 @@ test.describe('Tier 2: Boundary & Corner Cases', () => {
     });
   });
 
-  // --- 3. Portal Login Form Boundary Cases ---
-  test.describe('Portal Login Boundaries', () => {
-    test.beforeEach(async ({ page }) => {
+  // --- 3. Retired customer portal safety ---
+  test.describe('Retired customer portal', () => {
+    test('should redirect to contact without exposing credential or payment fields', async ({ page }) => {
       await page.goto('/portal');
-      await page.waitForTimeout(2000); // Ensure client-side hydration is complete
-    });
-
-    test('should show errors on empty login details', async ({ page }) => {
-      await page.click('button[type="submit"]');
-      await expect(page.locator('text=Email address is required')).toBeVisible();
-      await expect(page.locator('text=Password is required')).toBeVisible();
-    });
-
-    test('should show error for password shorter than 6 characters', async ({ page }) => {
-      await page.fill('input[type="email"]', 'test@example.com');
-      await page.fill('input[type="password"]', '12345'); // too short
-
-      await page.click('button[type="submit"]');
-      await expect(page.locator('text=Password must be at least 6 characters')).toBeVisible();
+      await expect(page).toHaveURL(/\/contact$/);
+      await expect(page.locator('input[type="password"], input[autocomplete^="cc-"]')).toHaveCount(0);
     });
   });
 
