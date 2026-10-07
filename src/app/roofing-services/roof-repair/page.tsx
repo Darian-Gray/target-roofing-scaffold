@@ -71,7 +71,7 @@ const repairTypes = [
   {
     icon: ShieldCheck,
     title: 'Tile Roof Repair',
-    desc: 'A cracked or slipped tile is cosmetic. The real leak is the torn underlayment beneath it. We lift the tile, repair or replace the underlayment that does the waterproofing, and reset a matching tile so the system sheds water again.',
+    desc: 'Cracked or slipped tile can expose the layers beneath it. A repair evaluation checks the tile covering, underlayment, flashing and decking to locate the source of water entry before defining the repair.',
   },
   {
     icon: Wind,
@@ -91,7 +91,7 @@ const repairFaqs = [
   },
   {
     q: 'Do you offer 24/7 emergency roof repair?',
-    a: 'Yes. Our crews respond around the clock, 365 days a year, across Southwest Florida. For active leaks and storm damage we tarp and stabilize fast - often in under two hours during an active emergency - then complete the permanent repair once the property is secure. Call 239-332-5707.',
+    a: 'For an active leak or storm damage, call 239-332-5707 to discuss the condition of the property and current availability. Emergency stabilization and permanent repair are different steps; access, weather and the extent of damage affect the response.',
   },
   {
     q: 'Will insurance cover my roof repair?',
@@ -99,7 +99,7 @@ const repairFaqs = [
   },
   {
     q: 'Do you warranty your roof repairs?',
-    a: 'Every Target Roofing repair carries a one-year workmanship warranty. If a repair we performed leaks again within that year, we return and correct it at no cost to you. That warranty is our incentive to fix the real problem the first time.',
+    a: 'Ask for the written workmanship warranty that applies to your proposed repair, including its duration, scope and exclusions. Manufacturer warranty requirements may also affect how an existing roof can be repaired.',
   },
   {
     q: 'What does a roof repair cost in Southwest Florida?',
@@ -606,6 +606,22 @@ export default function RoofRepairPage() {
               </div>
             </div>
           </AnimateIn>
+        </div>
+      </section>
+
+      <section id="commercial-repair" className="bg-white py-16 md:py-24 scroll-mt-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid gap-12 lg:grid-cols-2">
+          <div>
+            <h2 className="text-3xl font-bold uppercase mb-5 font-[family-name:var(--font-display)]">Commercial &amp; HOA roof leak repair</h2>
+            <p className="text-[var(--gray-600)] leading-relaxed mb-5">On an occupied building, the water stain and the roof defect may be in different places. Share the time the leak occurs, rooms affected, recent rooftop work and earlier repair records. The evaluation should consider drains, seams, penetrations, equipment curbs and transitions between roof areas.</p>
+            <p className="text-[var(--gray-600)] leading-relaxed mb-5">The repair method depends on the existing assembly and its condition. A TPO or PVC membrane, built-up roof, metal roof or tile system needs a compatible detail. Repeatedly applying a general coating or sealant without finding the source can leave the underlying problem unresolved.</p>
+            <p className="text-[var(--gray-600)] leading-relaxed">For an HOA, condominium or operating business, identify the authorized contact, safe access, tenant notices and any areas that need protection. Separate immediate stabilization from the written scope for permanent work.</p>
+          </div>
+          <div className="bg-[var(--gray-50)] border-t-4 border-[var(--red)] p-8">
+            <h3 className="text-2xl font-bold uppercase mb-5 font-[family-name:var(--font-display)]">Choose the next step from the findings</h3>
+            <ul className="list-disc pl-5 space-y-4 text-[var(--gray-600)]"><li>An isolated defect may need a targeted repair.</li><li>Recurring water entry or deterioration across the assembly needs a broader condition review.</li><li>A maintenance plan can organize inspections and documented follow-up after the repair.</li><li>Compare replacement when the repair scope or remaining condition no longer supports a practical repair.</li></ul>
+            <div className="mt-7 flex flex-col gap-4"><Link href="/roofing-services/tpo-pvc-membrane-roofing" className="text-[var(--red)] font-bold underline underline-offset-4">TPO &amp; PVC roof systems</Link><Link href="/commercial-hoa-roof-maintenance" className="text-[var(--red)] font-bold underline underline-offset-4">Commercial &amp; HOA maintenance</Link><Link href="/roofing-services/roof-replacement" className="text-[var(--red)] font-bold underline underline-offset-4">Repair versus replacement planning</Link><a href="#lead-form" className="text-[var(--red)] font-bold underline underline-offset-4">Request a roof repair evaluation</a></div>
+          </div>
         </div>
       </section>
 
