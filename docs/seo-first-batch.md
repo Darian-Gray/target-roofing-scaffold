@@ -12,7 +12,7 @@ Based on company main `329f192f5d52c4f26c1b8b869c4a3c712cc26a68`, inspected Octo
 
 ## Validation
 
-Production build passes. 22 local behavior/security tests pass. Read-only HTTP crawl verifies 77 article URLs return 200, all are linked from the seven archive pages, and canonicals/sitemap entries are correct. Eight county-representative hub/service pages and the replacement form pass. Desktop and 390px mobile browser checks show no horizontal overflow; the hero image loads and the CTA reaches a form with Reroofing selected.
+Production build passes. 25 local behavior/security tests pass. An isolated combined release with PR 4 also builds and passes all 48 form, SEO and security tests. Read-only HTTP crawl verifies 77 article URLs return 200, all are linked from the seven archive pages, and canonicals/sitemap entries are correct. The second review also checks all 40 city/service routes, three updated guides, 77 internal link destinations and 34 anchors. The replacement form reaches Reroofing selection and rejects an empty submission without saving or sending. Earlier desktop and 390px mobile checks passed; the second review's browser check measured 736px with no horizontal overflow. Its viewport override did not apply, so it is not a fresh 390px check.
 
 The repository already skips type validation during builds. Standalone `tsc --noEmit` still reports its existing `src/components/AnimateIn.tsx:79` TS2590 error. Targeted lint and `git diff --check` pass. These checks do not prove Google indexing, analytics receipt, live database behavior or actual mailbox delivery.
 
@@ -21,6 +21,8 @@ The repository already skips type validation during builds. Standalone `tsc --no
 The existing form-routing PR 4 is separate and must be reconciled before release. It changes Free Estimate contact links and notification delivery reporting. Preserve its estimate intent when combining the archive change; the archive CTA moved into `src/components/NewsArchive.tsx`. After combining, rerun build, form checks and this crawl against the release preview. Neither PR should silently replace the other's fixes.
 
 The Oct 7 second review found and corrected the shared inline form's repair-only confirmation: it now confirms a saved request without promising a response time. If the server reports notification failure, it preserves the saved confirmation and provides the phone fallback. The archive estimate CTA now preserves PR 4's `/contact?service=free-estimate` intent. PR 4's news-page conflict must retain this PR's server wrapper and moved archive component.
+
+This conflict was resolved and validated in an isolated local combined branch. The public PRs remain separate and unmerged. The combined release patch is a prepared review artifact, not a deployed change.
 
 After deployment, repeat the crawl on the deployed URL and do uniquely labeled inquiries through contact, estimate, softwash, cleaning estimate, intake and completed chat. Check saved IDs and fields, expected recipient inbox, reply destination, failure handling and first staff response. Once Analytics access is recovered, confirm each saved test lead produces one generate_lead event and no phone click is counted as an answered call. No test inquiries were submitted to production during this SEO batch.
 
