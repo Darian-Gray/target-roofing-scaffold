@@ -10,8 +10,8 @@ import nodemailer, { type Transporter } from 'nodemailer'
  *   CONTACT_NOTIFY_TO    recipients for the contact page form (WordPress Contact US form went to service@)
  *   LEAD_NOTIFY_TO       recipients for estimate forms (WordPress Free Estimate / Short Form went to projects@)
  *   SOFTWASH_NOTIFY_TO   recipients for softwash requests
- *   INTAKE_NOTIFY_TO     optional extra recipients for Prospect Intake submissions
- *   INTAKE_REPLY_TO      optional reply-to for Prospect Intake notifications
+ *   INTAKE_NOTIFY_TO     office copy for Prospect Intake (defaults to projects@targetroofers.com)
+ *   INTAKE_REPLY_TO      Prospect Intake reply-to (defaults to admin@targetroofers.com)
  *
  * A notification never blocks a submission: the record is saved first, and a failed or
  * unconfigured send is logged and reported back to the caller.
@@ -20,6 +20,7 @@ import nodemailer, { type Transporter } from 'nodemailer'
 export type NotifyField = [label: string, value: string | null | undefined]
 
 export interface NotifyResult {
+  /** SMTP accepted all recipients. This does not establish inbox delivery. */
   sent: boolean
   error?: string
 }
@@ -90,8 +91,9 @@ ${rows
 </table>
 </div>`
 
+  let timeout: ReturnType<typeof setTimeout> | undefined
   try {
-    await Promise.race([
+    const info = await Promise.race([
       transport.sendMail({
         from: fromHeader(opts.fromName),
         to: opts.to,
@@ -100,11 +102,18 @@ ${rows
         text,
         html,
       }),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP send timed out')), SEND_TIMEOUT_MS)),
+      new Promise<never>((_, reject) => {
+        timeout = setTimeout(() => reject(new Error('SMTP send timed out')), SEND_TIMEOUT_MS)
+      }),
     ])
+    if (info.rejected?.length || !info.accepted?.length || info.accepted.length < opts.to.length) {
+      return { sent: false, error: 'SMTP did not accept all notification recipients.' }
+    }
     return { sent: true }
   } catch (error) {
     console.error('[notify] Send failed:', opts.subject, error)
     return { sent: false, error: error instanceof Error ? error.message : String(error) }
+  } finally {
+    if (timeout !== undefined) clearTimeout(timeout)
   }
 }

@@ -59,7 +59,7 @@ export default function SoftwashPage() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href="/contact"
+                href="#quote"
                 className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-[var(--red)] text-white font-bold uppercase tracking-wide rounded hover:bg-[var(--red-dark)] transition-colors shadow-lg text-sm"
               >
                 Schedule Today
@@ -155,7 +155,7 @@ export default function SoftwashPage() {
       </div>
 
       {/* ==================== CONTACT FORM ==================== */}
-      <section className="bg-[var(--gray-50)] py-20 md:py-28">
+      <section id="quote" className="bg-[var(--gray-50)] py-20 md:py-28">
         <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[var(--black)] font-[family-name:var(--font-display)] uppercase mb-4">
