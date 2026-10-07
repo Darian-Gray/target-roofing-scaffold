@@ -334,6 +334,7 @@ export default function InlineLeadForm({
             >
               <option value="">Select service...</option>
               <option value="repairs">Roof Repair</option>
+                <option value="inspection">Roof Inspection</option>
               <option value="emergency-storm-repair">Emergency / Storm Damage</option>
               <option value="maintenance-plans">Maintenance Plan</option>
               <option value="reroofing">Reroofing</option>
