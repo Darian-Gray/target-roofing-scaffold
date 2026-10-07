@@ -4,8 +4,8 @@ import 'server-only'
  * Staff choices for the internal Prospect Intake Form (carried over from WordPress Gravity Form 5).
  * Emails stay on the server and are never sent to the browser.
  *
- * Notification routing matches WordPress: the email goes to the person who created the project
- * (Sarah Taylor -> sarah@, Janely Santamaria -> projects@).
+ * Notifications go to the assigned salesperson plus the configured office copy.
+ * Creator choices are retained as source information, not notification recipients.
  */
 export const INTAKE_CREATORS: { name: string; notifyEmail: string }[] = [
   { name: 'Sarah Taylor', notifyEmail: 'sarah@targetroofers.com' },

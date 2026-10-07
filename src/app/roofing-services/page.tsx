@@ -494,7 +494,7 @@ export default function RoofingServicesPage() {
               </AnimateIn>
               <AnimateIn animation="scale" delay={200}>
                 <Link
-                  href="/contact"
+                  href="/contact?service=free-estimate"
                   className="inline-flex items-center gap-2 text-[var(--red)] font-semibold hover:text-[var(--red-dark)] transition-colors text-sm uppercase tracking-wider font-[family-name:var(--font-display)] min-h-[44px] py-2 px-3"
                 >
                   Request a Quote

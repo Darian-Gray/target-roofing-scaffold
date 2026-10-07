@@ -26,7 +26,7 @@ const footerLinks = {
     { name: 'Financing', href: '/financing' },
     { name: 'Warranties', href: '/warranties' },
     { name: 'Contact Us', href: '/contact' },
-    { name: 'Free Estimate', href: '/contact' },
+    { name: 'Free Estimate', href: '/contact?service=free-estimate' },
   ],
 }
 
@@ -44,7 +44,7 @@ export default function Footer() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/contact"
+              href="/contact?service=free-estimate"
               className="inline-flex items-center px-8 py-3.5 bg-white text-[var(--red)] font-bold uppercase tracking-wide rounded hover:bg-[var(--gray-100)] transition-colors shadow-lg"
             >
               Get a Free Estimate

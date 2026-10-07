@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react'
 import { submitContactLead } from '@/app/actions'
 import { trackLead, attributionSummary } from '@/lib/tracking'
+import { contactFormSource } from '@/lib/form-intent'
 import AnimateIn from '@/components/AnimateIn'
 import RoofSchematic from '@/components/RoofSchematic'
 
@@ -47,9 +48,10 @@ export default function ContactPage() {
     setSuccess(false)
 
     try {
-      const res = await submitContactLead({ ...form, attribution: attributionSummary(), source: 'contact-page' })
+      const source = contactFormSource(form.service, window.location.search)
+      const res = await submitContactLead({ ...form, attribution: attributionSummary(), source })
       if (res.success) {
-        trackLead(res.leadId, { form_id: 'contact-page', service: form.service })
+        trackLead(res.leadId, { form_id: source === 'estimate' ? 'free-estimate' : 'contact-page', service: form.service })
         setSuccess(true)
         setForm({
           firstName: '',
@@ -66,7 +68,7 @@ export default function ContactPage() {
         setErrors(res.errors || {})
         setError(res.error || 'Please correct the highlighted fields.')
       }
-    } catch (err) {
+    } catch {
       setError('A connection error occurred. Please try again later.')
     } finally {
       setLoading(false)

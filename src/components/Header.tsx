@@ -106,7 +106,7 @@ const servicesMega: MegaPanel = {
     type: 'cta',
     heading: 'Need a Repair?',
     body: 'Get a free estimate from our expert team. We respond to most requests within 24 hours.',
-    href: '/contact',
+    href: '/contact?service=free-estimate',
     linkText: 'Request Free Estimate',
   },
 }
@@ -242,7 +242,7 @@ function ServicesMegaPanel({ mega, onNavigate }: { mega: MegaPanel; onNavigate: 
 
         {/* Estimate banner - overlaps the diagonal edge */}
         <Link
-          href="/contact"
+          href="/contact?service=free-estimate"
           onClick={onNavigate}
           className="group/cta absolute bottom-9 left-0 right-4 flex items-center gap-4 bg-[#0b0b0b] py-4 pl-10 pr-8 transition-colors hover:bg-black"
           style={{ clipPath: 'polygon(0 0, 100% 0, calc(100% - 2rem) 100%, 0 100%)' }}
@@ -326,7 +326,7 @@ function ServicesMegaPanel({ mega, onNavigate }: { mega: MegaPanel; onNavigate: 
           </span>
           <span className="mx-3 hidden h-10 w-px -skew-x-[18deg] bg-gray-300 lg:block" aria-hidden="true" />
           <Link
-            href="/contact"
+            href="/contact?service=free-estimate"
             onClick={onNavigate}
             className="ml-auto shrink-0 -skew-x-[14deg] bg-gradient-to-r from-[var(--red-light)] to-[var(--red)] px-9 py-3 shadow-md transition-all hover:from-[var(--red)] hover:to-[var(--red-dark)] hover:shadow-lg"
           >

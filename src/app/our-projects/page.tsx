@@ -721,7 +721,7 @@ function CTASection() {
           </p>
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
-              href="/contact"
+              href="/contact?service=free-estimate"
               className="inline-flex items-center gap-2 rounded bg-[var(--red)] px-8 py-4 text-base font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-[var(--red-dark)] hover:shadow-xl hover:scale-[1.02]"
             >
               Get Free Estimate

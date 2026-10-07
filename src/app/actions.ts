@@ -35,6 +35,8 @@ interface LeadSaveResult {
   success: boolean
   /** ID of the saved lead row. The OpenAI lead_created event uses it as a stable event_id. */
   leadId?: string
+  /** True when SMTP accepted the notification; inbox delivery still needs verification. */
+  notified?: boolean
   error?: string
   errors?: Record<string, string>
 }
@@ -64,7 +66,7 @@ async function notifyNewLead(
   formType: 'contact' | 'softwash',
   data: Record<string, string | undefined>,
   leadId: string | undefined
-): Promise<void> {
+): Promise<boolean> {
   const name = [data.firstName, data.lastName].filter(Boolean).join(' ')
   const site = process.env.NEXT_PUBLIC_SITE_URL || 'https://targetroofers.com'
   const common: NotifyField[] = [
@@ -76,22 +78,29 @@ async function notifyNewLead(
 
   let result
   if (formType === 'softwash') {
+    const roofCleaning = data.source === 'roof-cleaning'
+    const to = recipientList(roofCleaning
+      ? process.env.LEAD_NOTIFY_TO || 'projects@targetroofers.com'
+      : process.env.SOFTWASH_NOTIFY_TO || 'service@targetroofers.com')
     result = await sendNotification({
-      to: recipientList(process.env.SOFTWASH_NOTIFY_TO),
-      subject: `New Softwash Lead from ${name}`,
-      heading: 'New softwash request from the website',
-      fromName: 'Target Roofing',
-      replyTo: data.email,
-      fields: [...common, ['Service address', data.serviceAddress], ...leadRows],
+      to,
+      subject: roofCleaning ? 'Website Lead' : `New Softwash Lead from ${name}`,
+      heading: roofCleaning ? 'New roof cleaning estimate request' : 'New softwash request from the website',
+      fromName: roofCleaning ? 'Website Inquiry' : 'Target Roofing',
+      replyTo: data.email?.trim() || to[0],
+      fields: [...common, ['Service', data.service], ['Service address', data.serviceAddress], ...leadRows],
     })
   } else {
     const fromContactPage = data.source === 'contact-page'
+    const to = recipientList(fromContactPage
+      ? process.env.CONTACT_NOTIFY_TO || 'service@targetroofers.com'
+      : process.env.LEAD_NOTIFY_TO || 'projects@targetroofers.com')
     result = await sendNotification({
-      to: recipientList(fromContactPage ? process.env.CONTACT_NOTIFY_TO : process.env.LEAD_NOTIFY_TO),
+      to,
       subject: fromContactPage ? 'Target Roofing - New submission from Contact US' : 'Website Lead',
       heading: fromContactPage ? 'New contact form submission' : 'New estimate request from the website',
       fromName: 'Website Inquiry',
-      replyTo: data.email,
+      replyTo: data.email?.trim() || to[0],
       fields: [
         ...common,
         ['Street address', data.streetAddress],
@@ -105,6 +114,7 @@ async function notifyNewLead(
     })
   }
   if (!result.sent) console.error('[leads] Lead saved but notification not sent:', leadId, result.error)
+  return result.sent
 }
 
 async function saveLead(
@@ -129,10 +139,10 @@ async function saveLead(
       })
       .select('id')
       .single()
-    if (error) throw error
-    const leadId = row?.id != null ? String(row.id) : undefined
-    if (formType !== 'portal_login') await notifyNewLead(formType, data, leadId)
-    return { success: true, leadId }
+    if (error || !row?.id) throw error || new Error('The saved lead did not return an ID.')
+    const leadId = String(row.id)
+    const notified = formType !== 'portal_login' && await notifyNewLead(formType, data, leadId)
+    return { success: true, leadId, notified }
   } catch (error) {
     console.error('Error saving lead:', error)
     return { success: false, error: 'Failed to save lead details.' }
@@ -202,7 +212,9 @@ export async function submitContactLead(formData: {
     ? `${formData.message}\n\n— — —\nLead source: ${formData.attribution}`
     : formData.message
 
-  return await saveLead('contact', { ...formData, message })
+  const source = formData.service === 'free-estimate' ? 'estimate' : formData.source || 'estimate'
+  const formName = source === 'contact-page' ? 'Contact Us' : 'Free Estimate'
+  return await saveLead('contact', { ...formData, source, email: formData.email.trim(), message: `${message}\n\nWebsite form: ${formName}` })
 }
 
 export async function submitSoftwashLead(formData: {
@@ -211,6 +223,8 @@ export async function submitSoftwashLead(formData: {
   email: string
   phone: string
   serviceAddress: string
+  source?: 'softwash' | 'roof-cleaning'
+  attribution?: string
 }) {
   const errors: Record<string, string> = {}
 
@@ -239,7 +253,10 @@ export async function submitSoftwashLead(formData: {
     return { success: false, errors, error: 'Please correct the highlighted fields.' }
   }
 
-  return await saveLead('softwash', formData)
+  const source = formData.source === 'roof-cleaning' ? 'roof-cleaning' : 'softwash'
+  const service = source === 'roof-cleaning' ? 'Roof Cleaning Estimate' : 'Softwash'
+  const message = [`Website form: ${service}`, formData.attribution ? `Lead source: ${formData.attribution}` : ''].filter(Boolean).join('\n')
+  return await saveLead('softwash', { ...formData, source, service, message, email: formData.email.trim() })
 }
 
 export async function submitPortalLogin(formData: {

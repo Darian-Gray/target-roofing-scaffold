@@ -186,7 +186,7 @@ export default async function ReviewsPage() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href="/contact"
+                href="/contact?service=free-estimate"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--red)] text-white font-bold uppercase tracking-wide rounded hover:bg-[var(--red-dark)] transition-colors shadow-lg text-sm"
               >
                 Get a Free Estimate

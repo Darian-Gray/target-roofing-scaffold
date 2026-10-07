@@ -63,7 +63,7 @@ const LEGACY_PAGE_REDIRECTS: Record<string, string> = {
   '/the-best-commercial-roofing-in-marco-island': '/locations/naples/commercial-roofing',
   '/commercial-roofing-services-booklet': '/roofing-services',
   '/hurricane-roofing-services': '/roofing-services/emergency-storm-repair',
-  '/roof-cleaning-system': '/softwash',
+  '/roof-cleaning-system': '/softwash?request=roof-cleaning',
   '/googlereview': '/reviews',
   '/video-gallery-test': '/video-gallery',
   '/contact-us': '/contact',
