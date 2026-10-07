@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenAI } from '@google/genai'
 import { supabase } from '@/lib/supabase'
 import { recipientList, sendNotification } from '@/lib/notify'
+import { extractChatLeadMarkers } from '@/lib/chat-lead-marker'
 
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_API_KEY! })
 
@@ -52,10 +53,11 @@ export async function POST(request: NextRequest) {
 
     const text = result.text || ''
 
-    const leadMatch = text.match(/\[SUBMIT_LEAD:(.*?)\]/)
+    const { markers, cleanText } = extractChatLeadMarkers(text)
+    const leadMatch = markers[0]
     if (leadMatch) {
       try {
-        const leadData = JSON.parse(leadMatch[1])
+        const leadData = JSON.parse(leadMatch.json)
         const nameParts = (leadData.firstName || '').split(' ')
         const firstName = nameParts[0] || leadData.firstName
         const lastName = leadData.lastName || nameParts.slice(1).join(' ') || ''
@@ -96,10 +98,6 @@ export async function POST(request: NextRequest) {
         }, { status: 500 })
       }
     }
-
-    const cleanText = text
-      .replace(/\[SUBMIT_LEAD:.*?\]/g, '')
-      .trim()
 
     return NextResponse.json({ message: cleanText })
   } catch (error) {
