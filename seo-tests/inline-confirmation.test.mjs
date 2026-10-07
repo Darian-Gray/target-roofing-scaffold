@@ -4,8 +4,8 @@ import test from 'node:test'
 import vm from 'node:vm'
 import ts from 'typescript'
 
-function form(response) {
-  const module = { exports: {} }, states = [], conversions = []
+function form(response, props = { defaultService: 'reroofing', formId: 'replacement' }) {
+  const module = { exports: {} }, states = [], conversions = [], submissions = []
   let cursor = 0
   const element = (type, props) => ({ type, props: props || {} })
   const require = name => {
@@ -17,17 +17,17 @@ function form(response) {
     if (name === 'react/jsx-runtime') return { jsx: element, jsxs: element, Fragment: 'fragment' }
     if (name === 'next/image') return { default: 'image' }
     if (name === 'lucide-react') return { Send: 'icon', CheckCircle: 'icon', Phone: 'icon' }
-    if (name === '@/app/actions') return { submitContactLead: async () => response }
+    if (name === '@/app/actions') return { submitContactLead: async data => { submissions.push(data); return response } }
     if (name === '@/lib/tracking') return { trackLead: (...args) => conversions.push(args), attributionSummary: () => '' }
     throw Error('Unexpected import ' + name)
   }
   const source = fs.readFileSync('src/components/InlineLeadForm.tsx', 'utf8')
   vm.runInNewContext(ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, jsx: ts.JsxEmit.ReactJSX } }).outputText,
     { module, exports: module.exports, require })
-  const render = () => { cursor = 0; return module.exports.default({ defaultService: 'reroofing', formId: 'replacement' }) }
+  const render = () => { cursor = 0; return module.exports.default(props) }
   const descendants = node => typeof node !== 'object' || node === null ? [] : [node, ...[node.props?.children].flat(Infinity).flatMap(descendants)]
   const text = node => typeof node === 'string' ? node : typeof node !== 'object' || node === null ? '' : [node.props?.children].flat(Infinity).map(text).join(' ')
-  return { render, descendants, text, conversions }
+  return { render, descendants, text, conversions, submissions }
 }
 
 test('saved replacement request shows the right confirmation without a response-time promise', async () => {
@@ -57,4 +57,25 @@ test('rejected request keeps the form and shows the error without a conversion',
   assert.ok(view.descendants(result).some(n => n.type === 'form'))
   assert.ok(view.descendants(result).some(n => n.props.role === 'alert'))
   assert.equal(view.conversions.length, 0)
+})
+
+test('inspection request has a matching selected option and submits that service', async () => {
+  const view = form({ success: true, leadId: 'saved-inspection', notified: true }, { defaultService: 'inspection', formId: 'inspection' })
+  const nodes = view.descendants(view.render())
+  const select = nodes.find(n => n.type === 'select' && n.props.name === 'service')
+  assert.equal(select.props.value, 'inspection')
+  const option = view.descendants(select).find(n => n.type === 'option' && n.props.value === select.props.value)
+  assert.equal(view.text(option), 'Roof Inspection')
+  await nodes.find(n => n.type === 'form').props.onSubmit({ preventDefault() {} })
+  assert.equal(view.submissions[0].service, 'inspection')
+  assert.equal(view.conversions[0][1].form_id, 'inspection')
+  assert.equal(view.conversions[0][1].service, 'inspection')
+})
+
+test('changing the inspection service updates the submitted inquiry and conversion label', async () => {
+  const view = form({ success: true, leadId: 'saved-repair', notified: true }, { defaultService: 'inspection', formId: 'inspection' })
+  view.descendants(view.render()).find(n => n.type === 'select' && n.props.name === 'service').props.onChange({ target: { name: 'service', value: 'repairs' } })
+  await view.descendants(view.render()).find(n => n.type === 'form').props.onSubmit({ preventDefault() {} })
+  assert.equal(view.submissions[0].service, 'repairs')
+  assert.equal(view.conversions[0][1].service, 'repairs')
 })
