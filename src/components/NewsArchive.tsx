@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Phone, ChevronRight } from 'lucide-react'
 import { NEWS_POSTS, NEWS_PAGE_SIZE, NEWS_PAGE_COUNT, newsPageHref } from '@/lib/news'
+import AnimateIn from '@/components/AnimateIn'
 
 const CATEGORY_COLORS: Record<string, string> = {
   'Service': 'bg-[var(--red)]',
@@ -46,27 +47,27 @@ export default function NewsArchive({ page }: { page: number }) {
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-28 md:py-36 lg:py-44">
           <div className="max-w-3xl">
             {/* Eyebrow */}
-            
+            <AnimateIn animation="fade-up">
               <p className="inline-flex items-center gap-2 text-[var(--red-light)] text-sm font-bold uppercase tracking-[0.2em] mb-6 font-[family-name:var(--font-display)]">
                 <span className="w-8 h-[2px] bg-[var(--red)]" />
                 News &amp; Insights
               </p>
-            
+            </AnimateIn>
 
-            
+            <AnimateIn animation="fade-up" delay={100}>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] mb-6 font-[family-name:var(--font-display)]">
                 Target <span className="text-[var(--red)]">News</span>
               </h1>
-            
+            </AnimateIn>
 
-            
+            <AnimateIn animation="fade-up" delay={200}>
               <p className="text-lg md:text-xl text-[var(--gray-300)] leading-relaxed max-w-2xl">
                 Everything You Need to Know About Commercial Roofing in Southwest
                 Florida. Here, you&apos;ll find news about Target Roofing,
                 as well as information we know will be valuable to our
                 customers and partners.
               </p>
-            
+            </AnimateIn>
           </div>
         </div>
       </section>
@@ -88,11 +89,11 @@ export default function NewsArchive({ page }: { page: number }) {
 
           {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayedPosts.map((post) => {
+            {displayedPosts.map((post, index) => {
               const postColor = post.color || CATEGORY_COLORS[post.category] || 'bg-[var(--red)]'
               return (
-                
-                <article key={post.slug}
+                <AnimateIn key={post.slug} animation="fade-up" delay={Math.min(index * 100, 500)}>
+                <article
                   className="group bg-white rounded-sm shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-full"
                 >
                   {/* Image or Placeholder */}
@@ -151,7 +152,7 @@ export default function NewsArchive({ page }: { page: number }) {
                     </Link>
                   </div>
                 </article>
-                
+                </AnimateIn>
               )
             })}
           </div>
