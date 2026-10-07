@@ -26,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/reviews',
     '/roofing-services',
     '/roofing-services/roof-repair',
+    '/roofing-services/commercial-roof-repair',
     '/roofing-services/roof-replacement',
     '/softwash',
     '/target-news',
