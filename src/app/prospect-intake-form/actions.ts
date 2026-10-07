@@ -72,12 +72,12 @@ export async function submitProspectIntake(input: ProspectIntakeInput): Promise<
 
   const customer = `${t(input.customerFirstName)} ${t(input.customerLastName)}`
   const sent = await sendNotification({
-    // Same routing and subject as the WordPress form: to the person who created the project.
-    to: recipientList(creator.notifyEmail, process.env.INTAKE_NOTIFY_TO),
+    // Casey's requested route: assigned salesperson plus a configurable office copy.
+    to: recipientList(rep.email, process.env.INTAKE_NOTIFY_TO || 'projects@targetroofers.com'),
     subject: 'Prospect Intake Form Submission',
     heading: `New prospect: ${t(input.projectName)}`,
     fromName: 'Target Roofing',
-    replyTo: process.env.INTAKE_REPLY_TO || undefined,
+    replyTo: process.env.INTAKE_REPLY_TO || 'admin@targetroofers.com',
     fields: [
       ['Project name', t(input.projectName)],
       ['Customer', customer],
