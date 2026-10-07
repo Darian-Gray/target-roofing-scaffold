@@ -7,7 +7,7 @@ const footerLinks = {
     { name: 'Roof Repairs', href: '/roofing-services/roof-repair' },
     { name: '24/7 Emergency Storm Repair', href: '/roofing-services/emergency-storm-repair' },
     { name: 'Maintenance Plans', href: '/roofing-services#maintenance-plans' },
-    { name: 'Reroofing', href: '/roofing-services#reroofing' },
+    { name: 'Roof Replacement', href: '/roofing-services/roof-replacement' },
     { name: 'New Roofs', href: '/roofing-services#new-roofs' },
     { name: 'Softwash', href: '/softwash' },
   ],
