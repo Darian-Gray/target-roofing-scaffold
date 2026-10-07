@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test:security": "node --test security-tests/*.test.mjs",
+    "test:forms": "node --test form-tests/*.test.mjs",
     "test:e2e": "playwright test"
   },
   "dependencies": {
