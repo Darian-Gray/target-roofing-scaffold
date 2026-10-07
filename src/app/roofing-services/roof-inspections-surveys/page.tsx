@@ -143,7 +143,7 @@ export default function RoofInspectionsSurveysPage() {
               Roof Inspections &amp; Surveys
             </h1>
             <p className="text-lg md:text-xl text-[var(--gray-300)] leading-relaxed mb-8 max-w-2xl">
-              Comprehensive commercial roof inspections using infrared moisture detection, core sampling, and visual survey methods. Our detailed reports identify issues before they become expensive problems.
+              Commercial roof condition surveys for your next property decision. Confirm the visual assessment, documentation and any specialized testing appropriate for your roof and the agreed scope.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a
@@ -232,12 +232,12 @@ export default function RoofInspectionsSurveysPage() {
                 </span>
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-[var(--black)] mb-6">
-                What Our Inspections Include
+                Define the Inspection Methods
               </h2>
             </AnimateIn>
             <AnimateIn animation="fade-up" delay={100}>
               <p className="text-lg text-[var(--gray-600)] leading-relaxed max-w-3xl mx-auto">
-                Every Target Roofing inspection combines advanced technology with hands-on expertise to deliver a complete picture of your roof&apos;s condition, not just what is visible on the surface.
+                Select the assessment methods for the question you need answered. The options below may be included where suitable and agreed in advance; the report should explain accessible findings, testing limits and any concealed conditions that still need investigation.
               </p>
             </AnimateIn>
           </div>
